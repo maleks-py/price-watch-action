@@ -1,0 +1,106 @@
+# TEMPLATE FOR PUBLIC REPO maleks-py/price-watch-action
+# Copy this file to your PUBLIC repo as .github/workflows/community-reports.yml
+# This Action validates community-reports.json and keeps it clean
+
+name: Manage Community Reports
+
+on:
+  push:
+    paths:
+      - "community-reports.json"
+  workflow_dispatch:
+    inputs:
+      productId:
+        description: "Product ID (e.g. kamatis, sibuyas-pula)"
+        required: false
+      productName:
+        description: "Product Name"
+        required: false
+      marketName:
+        description: "Market Name"
+        required: false
+      storeName:
+        description: "Store Name (e.g. Mang Bert Stall #14)"
+        required: false
+      price:
+        description: "Price"
+        required: false
+      unit:
+        description: "Unit (kg, pc, etc)"
+        required: false
+        default: "kg"
+  schedule:
+    - cron: "0 22 * * *" # 6 AM PHT daily - cleanup old reports
+
+permissions:
+  contents: write
+
+jobs:
+  validate-and-cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate community-reports.json
+        run: |
+          echo "Validating community-reports.json..."
+          if [ ! -f community-reports.json ]; then
+            echo "[]"> community-reports.json
+            echo "Created empty community-reports.json"
+          fi
+          
+          # Check valid JSON
+          jq empty community-reports.json || (echo "Invalid JSON!" && exit 1)
+          
+          # Check each report has required fields
+          jq -e '.[] | select(.productId == null or .marketName == null or .storeName == null or .price == null)' community-reports.json && echo "Found reports missing required fields!" && exit 1 || echo "All reports have required fields"
+          
+          # Count reports
+          COUNT=$(jq 'length' community-reports.json)
+          echo "Total community reports: $COUNT"
+          
+          # Show tag breakdown
+          echo "Tag breakdown:"
+          jq -r '.[].tag' community-reports.json | sort | uniq -c || echo "No tags yet"
+          
+          # Show cheapest per product
+          echo "Cheapest per product:"
+          jq -r 'group_by(.productId)[] | min_by(.price) | "\(.productName) - \(.marketName) - \(.storeName) - ₱\(.price)/\(.unit) - \(.tag) - \(.anonymousId)"' community-reports.json | head -20
+
+      - name: Cleanup old reports (>30 days) and spam
+        run: |
+          # Keep only reports from last 30 days and with valid price 1-10000
+          # And remove spam: downvotes > upvotes*2 and downvotes > 5
+          jq '[.[] | select(
+            (.price >= 1 and .price <= 10000) and
+            (.createdAt | fromdateiso8601 > (now - 30*24*3600)) and
+            (.downvotes <= 5 or .downvotes <= .upvotes*2)
+          )] | sort_by(.createdAt) | reverse | .[0:500]' community-reports.json > /tmp/cleaned.json
+          
+          BEFORE=$(jq 'length' community-reports.json)
+          AFTER=$(jq 'length' /tmp/cleaned.json)
+          echo "Before cleanup: $BEFORE, After: $AFTER"
+          
+          mv /tmp/cleaned.json community-reports.json
+          
+          if [ "$BEFORE" != "$AFTER" ]; then
+            echo "Cleaned up old/spam reports"
+          else
+            echo "No cleanup needed"
+          fi
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add community-reports.json
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git commit -m "chore: cleanup community reports $(date +%Y-%m-%d) - $(jq 'length' community-reports.json) reports"
+            git push
+          fi
+
+  # Optional: Auto-merge reports from GitHub Issues
+  # Users can create issue with label "price-report" and body containing JSON, Action will parse and add to community-reports.json
+  # For Phase 2, manual PR is simpler: user posts via app locally, admin manually adds to public JSON via PR
