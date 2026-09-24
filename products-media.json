@@ -1,0 +1,128 @@
+{
+ "version": 1,
+ "generatedAt": "2026-09-24T04:36:48.498Z",
+ "base": "https://pub-fe5f70a35fe143a58b8eed518cf01e6a.r2.dev",
+ "count": 20,
+ "photos": {
+  "alimango": {
+   "key": "products/alimango.jpg",
+   "hash": "0d0c8a4c",
+   "size": 23497,
+   "updatedAt": "2026-09-24T04:36:45.870Z"
+  },
+  "bangus": {
+   "key": "products/bangus.jpg",
+   "hash": "706207ca",
+   "size": 8875,
+   "updatedAt": "2026-09-24T04:36:45.996Z"
+  },
+  "bawang": {
+   "key": "products/bawang.jpg",
+   "hash": "de952c47",
+   "size": 12248,
+   "updatedAt": "2026-09-24T04:36:46.135Z"
+  },
+  "beef-brisket": {
+   "key": "products/beef-brisket.jpg",
+   "hash": "6da242e4",
+   "size": 18860,
+   "updatedAt": "2026-09-24T04:36:46.294Z"
+  },
+  "beef-sirloin": {
+   "key": "products/beef-sirloin.jpg",
+   "hash": "a157b6b6",
+   "size": 18758,
+   "updatedAt": "2026-09-24T04:36:46.439Z"
+  },
+  "chicken-breast": {
+   "key": "products/chicken-breast.jpg",
+   "hash": "5e7a0623",
+   "size": 7153,
+   "updatedAt": "2026-09-24T04:36:46.563Z"
+  },
+  "chicken-leg": {
+   "key": "products/chicken-leg.jpg",
+   "hash": "41cd397c",
+   "size": 10451,
+   "updatedAt": "2026-09-24T04:36:46.707Z"
+  },
+  "chicken-whole": {
+   "key": "products/chicken-whole.jpg",
+   "hash": "dd16c861",
+   "size": 16244,
+   "updatedAt": "2026-09-24T04:36:46.857Z"
+  },
+  "chicken-wings": {
+   "key": "products/chicken-wings.jpg",
+   "hash": "a3e216ce",
+   "size": 12252,
+   "updatedAt": "2026-09-24T04:36:46.992Z"
+  },
+  "galunggong": {
+   "key": "products/galunggong.jpg",
+   "hash": "52e8a629",
+   "size": 7636,
+   "updatedAt": "2026-09-24T04:36:47.113Z"
+  },
+  "giniling-pork": {
+   "key": "products/giniling-pork.jpg",
+   "hash": "c409cb27",
+   "size": 20924,
+   "updatedAt": "2026-09-24T04:36:47.271Z"
+  },
+  "hipon": {
+   "key": "products/hipon.jpg",
+   "hash": "f7447733",
+   "size": 25018,
+   "updatedAt": "2026-09-24T04:36:47.435Z"
+  },
+  "kamatis": {
+   "key": "products/kamatis.jpg",
+   "hash": "0c4bc407",
+   "size": 9302,
+   "updatedAt": "2026-09-24T04:36:47.557Z"
+  },
+  "pork-kasim": {
+   "key": "products/pork-kasim.jpg",
+   "hash": "cb1f082f",
+   "size": 11217,
+   "updatedAt": "2026-09-24T04:36:47.694Z"
+  },
+  "pork-liempo": {
+   "key": "products/pork-liempo.jpg",
+   "hash": "1e82dc31",
+   "size": 9139,
+   "updatedAt": "2026-09-24T04:36:47.823Z"
+  },
+  "porkchop": {
+   "key": "products/porkchop.jpg",
+   "hash": "f080fa70",
+   "size": 14546,
+   "updatedAt": "2026-09-24T04:36:47.966Z"
+  },
+  "pusit": {
+   "key": "products/pusit.jpg",
+   "hash": "a638d173",
+   "size": 8016,
+   "updatedAt": "2026-09-24T04:36:48.092Z"
+  },
+  "sibuyas-pula": {
+   "key": "products/sibuyas-pula.jpg",
+   "hash": "86ae3143",
+   "size": 17036,
+   "updatedAt": "2026-09-24T04:36:48.234Z"
+  },
+  "tamban": {
+   "key": "products/tamban.jpg",
+   "hash": "f28c953c",
+   "size": 12601,
+   "updatedAt": "2026-09-24T04:36:48.366Z"
+  },
+  "tilapia": {
+   "key": "products/tilapia.jpg",
+   "hash": "7371dcf4",
+   "size": 13083,
+   "updatedAt": "2026-09-24T04:36:48.498Z"
+  }
+ }
+}
