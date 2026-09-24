@@ -52,9 +52,22 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: auto
+          # AWS CLI 2.23+ (runner image has 2.36) sends CRC64 checksums by
+          # default. R2 rejects those headers. when_required restores the
+          # pre-2.23 behavior Cloudflare documents for the AWS CLI.
+          AWS_REQUEST_CHECKSUM_CALCULATION: when_required
+          AWS_RESPONSE_CHECKSUM_VALIDATION: when_required
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_BUCKET: ${{ vars.R2_BUCKET }}
         run: |
-          aws s3 sync dist/products "s3://${{ vars.R2_BUCKET }}/products" \
-            --endpoint-url "https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com" \
+          if [ -z "$AWS_ACCESS_KEY_ID" ] || [ -z "$AWS_SECRET_ACCESS_KEY" ] || [ -z "$R2_ACCOUNT_ID" ]; then
+            echo "::error::Missing R2 Actions secrets. Add R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, and R2_ACCOUNT_ID, then re-run. Do not paste the values into chat."
+            exit 1
+          fi
+          # Variable is preferred; this is the bucket already wired to the public r2.dev URL.
+          BUCKET="${R2_BUCKET:-price-watch-evidence}"
+          aws s3 sync dist/products "s3://${BUCKET}/products" \
+            --endpoint-url "https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com" \
             --delete --no-progress --content-type image/jpeg
 
       - name: Commit manifest if changed
